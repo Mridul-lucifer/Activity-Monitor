@@ -91,20 +91,25 @@ const HandsUpExercise = () => {
         Calories : val
     })
     alert(response.data.msg);
-    navigate('/')
+    navigate('/');
   }
  
   return (
-    <div>
+    <div className="flex justify-center items-center w-screen h-screen bg-black text-center">
+      <h1 className="text-2xl font-bold fixed bg-amber-600 top-0 left-20 z-4 p-2 rounded-b-2xl  border-b-2 border-r-2 border-red-800">Challenge - Hands up, down!</h1>
       <video
+        className="w-screen h-screen border-amber-400 z-1"
         ref={videoRef}
-        width="640"
-        height="480"
         autoPlay
         style={{ transform: 'scaleX(-1)' }} // Mirror video for easier interaction
       />
-      <div><h1>Arms-ups: <span>{count}</span></h1>
-      <button className='btn-hands' onClick={submithands}>Submit</button></div>
+      <div className="fixed bg-cyan-900 bottom-0 right-20 text-center rounded-t-2xl z-4">
+        <h1 className="text-2xl font-bold p-2">Arms-ups: <span className="bg-gray-500 pr-2 pl-2 rounded-xl">{count}</span></h1>
+      <div className="w-full grid grid-cols-2 ">
+        <button className='bg-green-500 font-bold' onClick={submithands}>Submit</button>
+        <button className='bg-red-500 font-bold' onClick={submithands}>Cancel</button>
+      </div>
+      </div>
     </div>
   );
 };

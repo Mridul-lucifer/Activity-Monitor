@@ -1,5 +1,4 @@
-import React from 'react';
-import "./Challenges.css";
+
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
@@ -10,19 +9,48 @@ function Home() {
     };
 
     return (
-        <div className="grid">
-            <div className="challenge-box" onClick={() => handleNavigation('/create-exam')}>
-                Push Ups
+        <div>
+            <div className="bg-red-500 p-11 h-screen text-center z-0 fixed top-0 right-0 w-screen">
+                <h1 className="text-4xl text-black font-bold">Start a new Challenge</h1>
+                <p className="text-teal-950">Healthier days are ahead. Let&apos;s get there together.</p>
+                </div>
+        <div className="z-1 relative pt-36">
+            <div className="h-11 w-screen rounded-t-full bg-yellow-50"></div>
+            <div className="bg-yellow-50 min-h-screen">
+            <div className="p-11">
+
+            <div className="relative h-64 mb-3.5 group overflow-hidden duration-500 bg-amber-400 rounded-2xl hover:bg-amber-500" onClick={() => handleNavigation('/hands-excercise')}>
+                <div className="h-64 flex flex-col justify-center p-11 xl:pl-24 relative z-3 ">
+                <h3 className="text-3xl font-bold ">Push Ups</h3>
+                <p className="">Build your strength, one rep at a time.</p>
+                </div>
+                <img className="absolute bottom-0 right-0 group-hover:scale-105 duration-500 z-2" src="Pushup.png" />
             </div>
-            <div className="challenge-box" onClick={() => handleNavigation('/views')}>
-                Sit Ups
+
+            <div className="relative h-64 mb-3.5 group overflow-hidden duration-500 bg-amber-400 rounded-2xl hover:bg-amber-500" onClick={() => handleNavigation('/hands-excercise')}>
+                <div className="h-64 flex flex-col justify-center p-11 xl:pl-24 relative z-3 bg-opacity-50">
+                <h3 className="text-3xl font-bold ">Jumpings</h3>
+                <p className="">Jump for joy, jump for health!</p>
+                </div>
+                <img className="absolute bottom-0 right-0 group-hover:scale-105 duration-500 h-full z-2" src="jumping.png" />
             </div>
-            <div className="challenge-box" onClick={() => handleNavigation('/hands-excercise')}>
-               hands Up Down
+            <div className="relative h-64 mb-3.5 group overflow-hidden duration-500 bg-amber-400 rounded-2xl hover:bg-amber-500" onClick={() => handleNavigation('/hands-excercise')}>
+                <div className="h-64 flex flex-col justify-center p-11 xl:pl-24 relative z-3">
+                <h3 className="text-3xl font-bold ">Hands Up-Down</h3>
+                <p className="">Hands up, down, get your body moving!</p>
+                </div>
+                <img className="absolute bottom-0 right-0 group-hover:scale-105 duration-500 h-60 z-2" src="handsUpDown.png" />
             </div>
-            <div className="challenge-box" onClick={() => handleNavigation('/settings')}>
-                Jumping
+            <div className="relative h-64 mb-3.5 group overflow-hidden duration-500 bg-amber-400 rounded-2xl hover:bg-amber-500" onClick={() => handleNavigation('/hands-excercise')}>
+                <div className="h-64 flex flex-col justify-center p-11 xl:pl-24 relative z-3">
+                <h3 className="text-3xl font-bold ">Sit Ups</h3>
+                <p className="">More than just abs, it&apos;s core fitness.</p>
+                </div>
+                <img className="absolute bottom-0 right-0 group-hover:scale-105 duration-500 h-60 z-2" src="sitUps.png" />
             </div>
+            </div>
+            </div>
+        </div>
         </div>
     );
 }
