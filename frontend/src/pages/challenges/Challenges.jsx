@@ -1,5 +1,5 @@
 
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Home() {
     const navigate = useNavigate();
@@ -34,13 +34,13 @@ function Home() {
                 </div>
                 <img className="absolute bottom-0 right-0 group-hover:scale-105 duration-500 h-full z-2" src="jumping.png" />
             </div>
-            <div className="relative h-64 mb-3.5 group overflow-hidden duration-500 bg-amber-400 rounded-2xl hover:bg-amber-500" onClick={() => handleNavigation('/hands-excercise')}>
+            <a href='/hands_up_count.html' target="_blank" rel="noopener noreferrer"><div className="relative h-64 mb-3.5 group overflow-hidden duration-500 bg-amber-400 rounded-2xl hover:bg-amber-500">
                 <div className="h-64 flex flex-col justify-center p-11 xl:pl-24 relative z-3">
                 <h3 className="text-3xl font-bold ">Hands Up-Down</h3>
                 <p className="">Hands up, down, get your body moving!</p>
                 </div>
                 <img className="absolute bottom-0 right-0 group-hover:scale-105 duration-500 h-60 z-2" src="handsUpDown.png" />
-            </div>
+            </div></a>
             <div className="relative h-64 mb-3.5 group overflow-hidden duration-500 bg-amber-400 rounded-2xl hover:bg-amber-500" onClick={() => handleNavigation('/hands-excercise')}>
                 <div className="h-64 flex flex-col justify-center p-11 xl:pl-24 relative z-3">
                 <h3 className="text-3xl font-bold ">Sit Ups</h3>

@@ -9,7 +9,7 @@ mongoose.connect(process.env.MongoUri).then(()=>{
     console.log("MongoDB Connected");
 }).catch((err)=>{
     console.log(err);
-}) 
+})  
 
 const {Verfication} = require('./Middlewares/Auth')
 const {SignUpFunction,LoginFunction} = require('./Endpoints/signup_login')

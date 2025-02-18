@@ -4,26 +4,27 @@ const jwt = require('jsonwebtoken')
 const secret_key = "wercvbn"
 
 const SignUpFunction = function (req,res){
-    const Crypted_Password = bcrypt.hashSync(req.body.Password,8);
+    // console.log(req.body); 
+    const Crypted_Password = bcrypt.hashSync(req.body.password,8);
     const User = new UserDetails({
-        Email : req.body.Email,
-        UserName : req.body.UserName,
-        Age : req.body.Age,
-        Gender : req.body.Gender,
+        Email : req.body.email,
+        UserName : req.body.firstName+"_"+req.body.lastName,
+        Age : req.body.age,
+        Gender : req.body.gender,
         Password : Crypted_Password
     })
     const isUser = UserDetails.findOne({"Email" : req.body.Email})
     isUser.then((user) => {
         if(user){
-            res.status(201).json({
+            res.status(200).json({
                 msg : "Already a account "
             })
-        }else{
+        }else{  
             User.save().then((user)=>{
                 const token = jwt.sign({UserId:user._id},secret_key)
-                    return res.status(202).json({
-                    msg : "Signup Successfull",
-                    token : token
+                    return res.status(201).json({
+                    "msg" : "Signup Successfull",
+                    "token" : token
                 })
             })
         }

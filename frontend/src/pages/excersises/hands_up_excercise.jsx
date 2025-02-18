@@ -53,15 +53,14 @@ const HandsUpExercise = () => {
             if (wristLeftY > shoulderLeftY && wristRightY > shoulderRightY) {
               if (position === 'up') {
                 setPosition('down');
-                setCount(prevCount => prevCount + 1);
+                setCount(count + 1);
               }
             }
 
             // Check for "up" position (wrist is higher than the shoulder)
             else if (wristLeftY < shoulderLeftY && wristRightY < shoulderRightY ) {
-              if (position === 'down') {
+              // if (position === 'down') {
                 setPosition('up');
-              }
             }
           }
         }
@@ -85,9 +84,9 @@ const HandsUpExercise = () => {
   const navigate = useNavigate();
   const submithands = async (e) =>{
     e.preventDefault();
-    let val = count*0.5;
+    let val = 10;
     const response = await axios.post('http://localhost:5000/activity',{
-        Authorization : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2N2IyYjBiOTM1MGI5ZTVhY2VkM2I2ZTEiLCJpYXQiOjE3Mzk3Nzk3NDgsImV4cCI6MTczOTc4MzM0OH0.UmMLPA_uSUsKfaU2cJjFmPlLRWV-hdXC1WuGMpS3VV4",
+        Authorization : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2N2IzZjNkYjI2MjM5YWE4MWJmZmVkMWEiLCJpYXQiOjE3Mzk4NDY2MTl9.P4dW8NXxPNGwNKqbIwpMivNiTzkf_NxTjEZlQVP9VVE",
         Calories : val
     })
     alert(response.data.msg);

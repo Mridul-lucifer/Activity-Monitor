@@ -1,15 +1,15 @@
 import { useRef, useState } from "react";
-
+import {useNavigate } from 'react-router-dom'
 export const Signup = () => {
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
   const dobRef = useRef(null);
-  const mobileRef = useRef(null);
+  const emailRef = useRef(null);
   const genderRef = useRef(null);
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
   const [age, setAge] = useState(null);
-
+  const navigate = useNavigate();
   const calculateAge = (dob) => {
     const birthDate = new Date(dob);
     const today = new Date();
@@ -28,7 +28,7 @@ export const Signup = () => {
     const firstName = firstNameRef.current.value;
     const lastName = lastNameRef.current.value;
     const dob = dobRef.current.value;
-    const mobile = mobileRef.current.value;
+    const email = emailRef.current.value;
     const gender = genderRef.current.value;
     const password = passwordRef.current.value;
     const confirmPassword = confirmPasswordRef.current.value;
@@ -59,7 +59,7 @@ export const Signup = () => {
       lastName,
       dob,
       age: userAge,
-      mobile,
+      email,
       gender,
       password,
     };
@@ -74,10 +74,13 @@ export const Signup = () => {
       });
 
       const result = await response.json();
-      console.log("Signup Response:", result);
+      console.log(result);
+      localStorage.setItem('auth',result.token);
+      alert("Signup Response:", result.msg);
+      navigate('/challenges');
     } catch (error) {
       console.error("Error signing up:", error);
-    }
+    } 
   };
 
   return (
@@ -146,15 +149,15 @@ export const Signup = () => {
           <div className="mb-4">
             <label
               className="block mb-2 text-sm font-bold text-gray-700"
-              htmlFor="mobile"
+              htmlFor="emial"
             >
-              Mobile No.
+              Email
             </label>
             <input
-              ref={mobileRef}
-              id="mobile"
-              type="text"
-              placeholder="Mobile"
+              ref={emailRef}
+              id="email"
+              type="email"
+              placeholder="Email"
               className="w-full px-3 py-2 border rounded shadow focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
           </div>

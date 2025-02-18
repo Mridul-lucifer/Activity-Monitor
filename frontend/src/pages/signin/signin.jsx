@@ -12,7 +12,7 @@ export const Signin = () => {
     const password = passwordRef.current.value;
 
     try {
-      const response = await fetch("http://localhost:5000/signin", {
+      const response = await fetch("http://localhost:5000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -24,7 +24,7 @@ export const Signin = () => {
 
       if (response.ok) {
         console.log("Signin successful:", result);
-        navigate("/dashboard"); // Redirect to dashboard or home
+        navigate("/challenges"); // Redirect to dashboard or home
       } else {
         setError(result.message || "Signin failed. Please try again.");
       }

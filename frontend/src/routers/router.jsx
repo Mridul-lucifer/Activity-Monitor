@@ -4,11 +4,17 @@ import App from "../App";
 import Hands_up_excercise from "../pages/excersises/hands_up_excercise";
 import { Signin } from "../pages/signin/signin";
 import { Signup } from "../pages/signup/signup";
+import Leaderboard from "../pages/leaderboard/leaderboard";
+import Home from "../pages/home/home"
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
+      {
+        path: "/",
+        element: <Home/>
+      },
       {
         path: "/challenges",
         element: <Challenges />,
@@ -25,6 +31,10 @@ const router = createBrowserRouter([
         path: "/hands-excercise",
         element: <Hands_up_excercise />,
       },
+      {
+        path: "/leaderboard",
+        element: <Leaderboard/>
+      }
     ],
   },
 ]);

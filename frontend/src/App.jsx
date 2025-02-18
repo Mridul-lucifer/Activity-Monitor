@@ -2,7 +2,6 @@ import { useState } from 'react'
 import './App.css'
 import axios from 'axios';
 import { Outlet } from 'react-router-dom';
-
 function App() {
   const[msg,setMsg]=useState("");
   const func = async function(event){
@@ -23,9 +22,9 @@ function App() {
   return (
     <>
     <div>
-      <div>header</div>
+      {/* <Header/> */}
       <Outlet/>
-      <div>footer</div>
+      {/* <div>footer</div> */}
     </div>
     </>
   )
