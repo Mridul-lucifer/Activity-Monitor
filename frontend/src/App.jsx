@@ -23,9 +23,9 @@ function App() {
   return (
     <>
     <div>
-      {/* <div>header</div> */}
+      <div>header</div>
       <Outlet/>
-      {/* <div>footer</div> */}
+      <div>footer</div>
     </div>
     </>
   )
