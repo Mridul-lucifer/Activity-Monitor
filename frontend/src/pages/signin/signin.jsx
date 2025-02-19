@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 
+import myBackground from './../Photos/signup.jpg';
+
 export const Signin = () => {
   const navigate = useNavigate();
   const emailRef = useRef(null);
@@ -35,7 +37,7 @@ export const Signin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center items-center">
+    <div style={{ backgroundImage: `url(${myBackground})`, backgroundSize: 'cover', backdropFilter: 'blur(2px)', height: '100vh', backgroundPosition: 'center' }} className="bg-signupbg min-h-screen bg-gray-100 text-gray-900 flex justify-center items-center backdrop-blur-sm bg-opacity-5">
       <div className="max-w-screen-md w-full m-5 sm:m-10 bg-white shadow-lg sm:rounded-lg flex flex-col items-center p-8">
         <h1 className="text-2xl xl:text-3xl font-extrabold text-center">
           Sign In

@@ -90,7 +90,7 @@ const HandsUpExercise = () => {
         Calories : val
     })
     alert(response.data.msg);
-    navigate('/');
+    navigate('/leaderboard');
   }
  
   return (
