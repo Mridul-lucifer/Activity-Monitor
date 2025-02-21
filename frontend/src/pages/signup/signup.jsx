@@ -10,6 +10,7 @@ export const Signup = () => {
   const genderRef = useRef(null);
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
+  const weightRef = useRef(null);
   const [age, setAge] = useState(null);
   const navigate = useNavigate();
   const calculateAge = (dob) => {
@@ -34,6 +35,7 @@ export const Signup = () => {
     const gender = genderRef.current.value;
     const password = passwordRef.current.value;
     const confirmPassword = confirmPasswordRef.current.value;
+    const weight = weightRef.current.value;
 
     if (password !== confirmPassword) {
       passwordRef.current.classList.add("border-red-500", "focus:ring-red-400");
@@ -64,6 +66,7 @@ export const Signup = () => {
       email,
       gender,
       password,
+      weight
     };
 
     try {
@@ -86,11 +89,13 @@ export const Signup = () => {
   };
 
   return (
-    <div style={{ backgroundImage: `url(${myBackground})`, backgroundSize: 'cover', backdropFilter: 'blur(2px)', height: '100vh', backgroundPosition: 'center' }} className="min-h-screen bg-gray-100 text-gray-900 flex justify-center items-center">
+    <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center items-center">
       <div className="max-w-screen-md w-full m-5 sm:m-10 bg-white shadow-lg sm:rounded-lg flex flex-col items-center p-8">
-        <h1 className="text-2xl xl:text-3xl font-extrabold text-center">
-          Sign Up
+        <h1 className="text-xl xl:text-2xl font-extrabold text-center">
+          Healthy Hive
         </h1>
+
+        <h2 className="text-lg xl:text-xl font-bold">Sign Up</h2>
 
         <form className="w-full mt-6">
           {/* First & Last Name */}
@@ -128,7 +133,8 @@ export const Signup = () => {
           </div>
 
           {/* DOB */}
-          <div className="mb-4">
+          <div className=" flex flex-col md:flex-row md:justify-between">
+          <div className="mb-4 md:w-1/2">
             <label
               className="block mb-2 text-sm font-bold text-gray-700"
               htmlFor="dob"
@@ -142,6 +148,23 @@ export const Signup = () => {
               className="w-full px-3 py-2 border rounded shadow focus:outline-none focus:ring-2 focus:ring-indigo-400"
               onChange={() => setAge(calculateAge(dobRef.current.value))}
             />
+          </div>
+
+            <div className="md:w-1/2 md:ml-2">
+              <label
+                className="block mb-2 text-sm font-bold text-gray-700"
+                htmlFor="weight"
+              >
+                Weight
+              </label>
+              <input
+                ref={weightRef}
+                id="weight"
+                type="number"
+                placeholder="Weight in kg"
+                className="w-full px-3 py-2 border rounded shadow focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              />
+            </div>
           </div>
 
           {/* Age Display */}
@@ -186,6 +209,8 @@ export const Signup = () => {
               <option value="Other">Other</option>
             </select>
           </div>
+
+
 
           {/* Password & Confirm Password */}
           <div className="mb-4 flex flex-col md:flex-row md:justify-between">

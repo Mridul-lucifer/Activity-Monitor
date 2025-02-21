@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+// import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const Leaderboard = () => {
-    const navigate = useNavigate(); // Initialize useNavigate
+    // const navigate = useNavigate(); // Initialize useNavigate
     const [leaderboardData, setLeaderboardData] = useState([]);
     const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -108,7 +108,7 @@ const Leaderboard = () => {
                                     </div>
                                 </div>
                                 <div className="mt-4 sm:mt-0">
-                                    <button onClick={() => navigate('/profile')} className="px-6 py-2 bg-[#B9B28A] text-white rounded-lg shadow-md hover:bg-[#504B38] focus:outline-none focus:ring-2 focus:ring-[#F8F3D9]"> {/* Olive Green Button */}
+                                    <button onClick={() => alert("Currently in Progress")} className="px-6 py-2 bg-[#B9B28A] text-white rounded-lg shadow-md hover:bg-[#504B38] focus:outline-none focus:ring-2 focus:ring-[#F8F3D9]"> {/* Olive Green Button */}
                                         View Profile
                                     </button>
                                 </div>
