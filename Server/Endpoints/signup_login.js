@@ -63,7 +63,7 @@ const LoginFunction = function (req, res) {
         });
       }
 
-      if (bcrypt.compareSync(req.body.password, user.password)) {
+      if (bcrypt.compareSync(req.body.password, user.Password)) {
         const token = jwt.sign({ UserId: user._id }, secret_key);
         return res.status(202).json({
           msg: "Login Successful",
