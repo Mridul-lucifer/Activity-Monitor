@@ -7,8 +7,8 @@ export default function Header() {
             Healthy Hive
           </Link>
           <nav className="hidden md:flex space-x-4">
-            <Link href="#features" className="text-muted-foreground hover:text-primary">
-              Features
+            <Link to="/challenges" className="text-muted-foreground hover:text-primary">
+              Challenges
             </Link>
             <Link to="/leaderboard" className="text-muted-foreground hover:text-primary">
               Leaderboard
