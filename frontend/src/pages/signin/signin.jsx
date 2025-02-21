@@ -28,7 +28,7 @@ export const Signin = () => {
         console.log("Signin successful:", result);
 
       localStorage.setItem('auth', result.token);
-        // navigate("/challenges"); // Redirect to dashboard or home
+        navigate("/challenges"); // Redirect to dashboard or home
       } else {
         setError(result.message || "Signin failed. Please try again.");
       }
