@@ -18,8 +18,7 @@ const { Verfication } = require("./Middlewares/Auth");
 const { SignUpFunction, LoginFunction } = require("./Endpoints/signup_login");
 const { LeaderBoardFunction } = require("./Endpoints/learder_board");
 const { ActivityFunction } = require("./Endpoints/activity");
-
-const {createCompetionFunction,joinCompetionFunction} = require("./Endpoints/Competion")
+const {createCompetionFunction,joinCompetionFunction,competiondone} = require("./Endpoints/Competion")
 
 app.use(express.json());
 app.use(cors());
@@ -33,6 +32,8 @@ app.post("/activity", Verfication, ActivityFunction);
 
 app.post("/createcompetion" , Verfication,createCompetionFunction);
 app.post("/joincompetion", Verfication,joinCompetionFunction)
+
+app.post("/competiondone", Verfication ,competiondone )
 
 app.listen(port, () => {
   console.log("Server is Runing.... ");
