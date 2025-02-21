@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
     Calories: {
         type: Number,
         default:0
-    }
+    },
+    Weight: {
+        type: Number,
+        required: true
+    },
 })
 module.exports = mongoose.model('UserDetails', userSchema);
