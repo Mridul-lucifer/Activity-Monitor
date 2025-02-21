@@ -7,6 +7,7 @@ import { Signup } from "../pages/signup/signup";
 import Leaderboard from "../pages/leaderboard/leaderboard";
 import Home from "../pages/home/home"
 import Competion from "../pages/competion/competion";
+import MyChallenges from "../pages/challenges/myChallenges";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/competion",
         element: <Competion/>
+      },
+      {
+        path: "/myComp",
+        element: <MyChallenges />
       }
     ],
   },

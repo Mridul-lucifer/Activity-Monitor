@@ -40,7 +40,7 @@ app.post("/createcompetion", Verfication, createCompetionFunction);
 app.post("/joincompetion", Verfication, joinCompetionFunction);
 
 app.post("/competiondone", Verfication, competiondone);
-app.get("/myCompetions", Verfication, myCompetions);
+app.post("/myCompetions", Verfication, myCompetions);
 
 app.listen(port, () => {
   console.log("Server is Runing.... ");

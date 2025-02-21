@@ -77,9 +77,10 @@ const competiondone = async function (req, res) {
 const myCompetions = async function (req, res) {
   try {
     const comps = await compDetails.find({ owner: req.userId });
+    console.log(comps);
     return res.status(200).json({
       msg: "Done",
-      comps: comps,
+      arr: comps,
     });
   } catch (error) {
     return res.status(500).json({

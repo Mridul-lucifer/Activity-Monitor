@@ -8,8 +8,7 @@ const compSchema = new mongoose.Schema({
     },
     passcode:  {
         type: Number,
-        required: true,
-        // unique: true
+        required: false,
     },
     type: {
         type: String,

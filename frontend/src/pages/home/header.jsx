@@ -33,6 +33,9 @@ export default function Header() {
             <Link to="/Competion" className="text-muted-foreground hover:text-primary">
               Create Competion
             </Link>
+            <Link to="/myComp" className="text-muted-foreground hover:text-primary">
+              My Competions
+            </Link>
           </nav>
           <div className="flex items-center">
             <button className="text-2xl block md:hidden" onClick={() => setShowMenu(!showMenu)}>{showMenu?<p>&#x2715;</p>:<p>&#9776;</p>}</button>
