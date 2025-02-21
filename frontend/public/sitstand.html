@@ -104,6 +104,7 @@
   }
 
   async function detectPose() {
+    const amount = localStorage.getItem('amount');
     const net = await posenet.load();
     const estimatePose = async () => {
       const pose = await net.estimateSinglePose(video, {
@@ -142,6 +143,9 @@
           if (hipLeftY > kneeLeftY && hipRightY > kneeRightY) {
             if (position === 'standing') {
               count++;
+              if(count == amount){
+                sendDataToAPI();
+              }
               position = 'sitting';
               countDisplay.textContent = count;
             }
