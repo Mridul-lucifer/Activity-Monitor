@@ -74,8 +74,24 @@ const competiondone = async function (req, res) {
   }
 };
 
+const myCompetions = async function (req, res) {
+  try {
+    const comps = await compDetails.find({ owner: req.userId });
+    return res.status(200).json({
+      msg: "Done",
+      comps: comps,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      msg: "Server error",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createCompetionFunction,
   joinCompetionFunction,
   competiondone,
+  myCompetions,
 };

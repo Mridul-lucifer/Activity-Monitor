@@ -6,7 +6,9 @@ const cors = require("cors");
 const app = express();
 const port = 5000;
 mongoose
-  .connect("mongodb+srv://sumanyu301:kotlakhurd@cluster0.itcpgws.mongodb.net/HealtyHive")
+  .connect(
+    "mongodb+srv://sumanyu301:kotlakhurd@cluster0.itcpgws.mongodb.net/HealtyHive"
+  )
   .then(() => {
     console.log("MongoDB Connected");
   })
@@ -18,7 +20,12 @@ const { Verfication } = require("./Middlewares/Auth");
 const { SignUpFunction, LoginFunction } = require("./Endpoints/signup_login");
 const { LeaderBoardFunction } = require("./Endpoints/learder_board");
 const { ActivityFunction } = require("./Endpoints/activity");
-const {createCompetionFunction,joinCompetionFunction,competiondone} = require("./Endpoints/Competion")
+const {
+  createCompetionFunction,
+  joinCompetionFunction,
+  competiondone,
+  myCompetions,
+} = require("./Endpoints/Competion");
 
 app.use(express.json());
 app.use(cors());
@@ -29,11 +36,11 @@ app.post("/login", LoginFunction);
 app.post("/leaderboard", Verfication, LeaderBoardFunction);
 app.post("/activity", Verfication, ActivityFunction);
 
+app.post("/createcompetion", Verfication, createCompetionFunction);
+app.post("/joincompetion", Verfication, joinCompetionFunction);
 
-app.post("/createcompetion" , Verfication,createCompetionFunction);
-app.post("/joincompetion", Verfication,joinCompetionFunction)
-
-app.post("/competiondone", Verfication ,competiondone )
+app.post("/competiondone", Verfication, competiondone);
+app.get("/myCompetions", Verfication, myCompetions);
 
 app.listen(port, () => {
   console.log("Server is Runing.... ");
