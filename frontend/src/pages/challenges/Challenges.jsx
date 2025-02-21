@@ -1,12 +1,12 @@
 
-import { Link, useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 function Home() {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    const handleNavigation = (path) => {
-        navigate(path);
-    };
+    // const handleNavigation = (path) => {
+    //     navigate(path);
+    // };
     const workInProgress = function(e){
         e.preventDefault();
         alert("Work In Progress... ")
@@ -30,7 +30,7 @@ function Home() {
                 <img className="absolute bottom-0 right-0 group-hover:scale-105 duration-500 h-60 z-2" src="handsUpDown.png" />
             </div></a>
 
-            <a href='/hands_up_count.html' target="_blank" rel="noopener noreferrer"><div className="relative h-64 mb-3.5 group overflow-hidden duration-500 bg-amber-400 rounded-2xl hover:bg-amber-500">
+            <a href='/sitstand.html' target="_blank" rel="noopener noreferrer"><div className="relative h-64 mb-3.5 group overflow-hidden duration-500 bg-amber-400 rounded-2xl hover:bg-amber-500">
                 <div className="h-64 flex flex-col justify-center p-11 xl:pl-24 relative z-3">
                 <h3 className="text-3xl font-bold ">Sit Ups</h3>
                 <p className="">More than just abs, it&apos;s core fitness.</p>
