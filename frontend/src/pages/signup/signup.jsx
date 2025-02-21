@@ -1,5 +1,7 @@
 import { useRef, useState } from "react";
 import {useNavigate } from 'react-router-dom'
+import myBackground from './../Photos/signup.jpg';
+
 export const Signup = () => {
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
@@ -76,7 +78,7 @@ export const Signup = () => {
       const result = await response.json();
       console.log(result);
       localStorage.setItem('auth',result.token);
-      alert("Signup Response:", result.msg);
+      // alert("Signup Response:", result.msg);
       navigate('/challenges');
     } catch (error) {
       console.error("Error signing up:", error);
@@ -84,7 +86,7 @@ export const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center items-center">
+    <div style={{ backgroundImage: `url(${myBackground})`, backgroundSize: 'cover', backdropFilter: 'blur(2px)', height: '100vh', backgroundPosition: 'center' }} className="min-h-screen bg-gray-100 text-gray-900 flex justify-center items-center">
       <div className="max-w-screen-md w-full m-5 sm:m-10 bg-white shadow-lg sm:rounded-lg flex flex-col items-center p-8">
         <h1 className="text-2xl xl:text-3xl font-extrabold text-center">
           Sign Up

@@ -10,7 +10,7 @@ function Home() {
 
     return (
         <div>
-            <div className="bg-red-500 p-11 h-screen text-center z-0 fixed top-0 right-0 w-screen">
+            <div className="bg-red-500 p-11 h-screen text-center z-0 fixed top-20 right-0 w-screen">
                 <h1 className="text-4xl text-black font-bold">Start a new Challenge</h1>
                 <p className="text-teal-950">Healthier days are ahead. Let&apos;s get there together.</p>
                 </div>

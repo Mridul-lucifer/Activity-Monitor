@@ -105,7 +105,6 @@ const Leaderboard = () => {
                                         <h2 className="text-xl font-bold text-[#504B38]"> {/* Dark Brown Card Text */}
                                             {currentUser?.UserName}
                                         </h2>
-                                        <p className="text-[#504B38]">Your Rank: {currentUser?.Calories}</p> {/* Dark Brown Rank Text */}
                                     </div>
                                 </div>
                                 <div className="mt-4 sm:mt-0">

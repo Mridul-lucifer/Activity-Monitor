@@ -20,14 +20,6 @@ const router = createBrowserRouter([
         element: <Challenges />,
       },
       {
-        path: "/signup",
-        element: <Signup />,
-      },
-      {
-        path: "/signin",
-        element: <Signin />,
-      },
-      {
         path: "/hands-excercise",
         element: <Hands_up_excercise />,
       },
@@ -36,6 +28,14 @@ const router = createBrowserRouter([
         element: <Leaderboard/>
       }
     ],
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
+  },
+  {
+    path: "/signin",
+    element: <Signin />,
   },
 ]);
 
