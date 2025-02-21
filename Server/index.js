@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(cors());
 
 app.post("/signup", SignUpFunction);
-app.post("/signin", LoginFunction);
+app.post("/login", LoginFunction);
 
 app.post("/leaderboard", Verfication, LeaderBoardFunction);
 app.post("/activity", Verfication, ActivityFunction);
