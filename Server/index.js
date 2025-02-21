@@ -19,6 +19,8 @@ const { SignUpFunction, LoginFunction } = require("./Endpoints/signup_login");
 const { LeaderBoardFunction } = require("./Endpoints/learder_board");
 const { ActivityFunction } = require("./Endpoints/activity");
 
+const {createCompetionFunction,joinCompetionFunction} = require("./Endpoints/Competion")
+
 app.use(express.json());
 app.use(cors());
 
@@ -27,6 +29,10 @@ app.post("/login", LoginFunction);
 
 app.post("/leaderboard", Verfication, LeaderBoardFunction);
 app.post("/activity", Verfication, ActivityFunction);
+
+
+app.post("/createcompetion" , Verfication,createCompetionFunction);
+app.post("/joincompetion", Verfication,joinCompetionFunction)
 
 app.listen(port, () => {
   console.log("Server is Runing.... ");

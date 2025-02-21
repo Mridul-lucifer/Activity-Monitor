@@ -30,8 +30,8 @@ export default function Header() {
             <Link to="/leaderboard" className="text-muted-foreground hover:text-primary">
               Leaderboard
             </Link>
-            <Link href="#" className="text-muted-foreground hover:text-primary">
-              About
+            <Link to="/Competion" className="text-muted-foreground hover:text-primary">
+              Create Competion
             </Link>
           </nav>
           <div className="flex items-center">

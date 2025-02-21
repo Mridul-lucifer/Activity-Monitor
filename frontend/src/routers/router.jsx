@@ -6,6 +6,7 @@ import { Signin } from "../pages/signin/signin";
 import { Signup } from "../pages/signup/signup";
 import Leaderboard from "../pages/leaderboard/leaderboard";
 import Home from "../pages/home/home"
+import Competion from "../pages/competion/competion";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/leaderboard",
         element: <Leaderboard/>
+      },
+      {
+        path: "/competion",
+        element: <Competion/>
       }
     ],
   },

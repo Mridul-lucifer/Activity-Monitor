@@ -47,12 +47,12 @@ const SignUpFunction = function (req, res) {
 
 const LoginFunction = function (req, res) {
   // Validate request body
-  const validation = loginSchema.safeParse(req.body);
-  if (!validation.success) {
-    return res
-      .status(400)
-      .json({ msg: "Invalid input", errors: validation.error.errors });
-  }
+  // const validation = loginSchema.safeParse(req.body);
+  // if (!validation.success) {
+  //   return res
+  //     .status(400)
+  //     .json({ msg: "Invalid input", errors: validation.error.errors });
+  // }
 
   const isUser = UserDetails.findOne({ Email: req.body.email });
   isUser
@@ -63,7 +63,7 @@ const LoginFunction = function (req, res) {
         });
       }
 
-      if (bcrypt.compareSync(req.body.password, user.password)) {
+      if (bcrypt.compareSync(req.body.password, user.Password)) {
         const token = jwt.sign({ UserId: user._id }, secret_key);
         return res.status(202).json({
           msg: "Login Successful",
