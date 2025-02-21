@@ -11,7 +11,7 @@ const ActivityFunction = async (req, res) => {
             });
         }
 
-        user.Calories += req.body.Calories;
+        user.Calories += req.body.Calories;//this is gonna tokens from the frontend
         await user.save();
 
         return res.status(200).json({
