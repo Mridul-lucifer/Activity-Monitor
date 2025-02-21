@@ -3,186 +3,222 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sit-up Counter with Pose Detection</title>
+  <title>Sit-to-Stand Counter with Landmarks and Lines</title>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tailwindcss@3.1.4/dist/tailwind.min.js"></script> <!-- Adding Tailwind CSS -->
   <style>
-    #video {
-      transform: scaleX(-1); /* Mirror video for easier interaction */
+    body {
+      margin: 0;
+      overflow: hidden;
     }
-    canvas {
+    .container {
+      margin: 0;
+      position: relative;
+    }
+    #video {
+      width: 100vw;
+      height: 100vh;
+      transform: scaleX(-1); /* Mirror video for easier interaction */
+      background-color: black;
+    }
+    #canvas {
       position: absolute;
+      width: 100vw;
+      height: 100vh;
       top: 0;
       left: 0;
     }
+    #title-exercise {
+      position: fixed;
+      top: 0;
+      left: 100px;
+      background-color: coral;
+      border-radius: 0 0 20px 20px;
+      padding: 10px 20px;
+      margin: 0;
+    }
+    #count-cont-bottom {
+      position: fixed;
+      bottom: 0;
+      right: 100px;
+      background-color: cadetblue;
+      padding: 10px;
+    }
+    #count-cont {
+      margin: 0;
+    }
+    #count {
+      background-color: azure;
+      padding: 5px;
+      margin: 0;
+    }
+    #button-cont {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 10px 4px;
+      gap: 4px;
+    }
+    #button-cont button {
+      border: none;
+      border-radius: 4px;
+    }
+    #apiButton {
+      background-color: rgb(60, 147, 10);
+      color: white;
+    }
+    #cancelButton {
+      background-color: rgb(144, 33, 33);
+      color: white;
+    }
   </style>
 </head>
-<body class="bg-black flex justify-center items-center w-screen h-screen text-white">
-
-  <div class="relative w-screen h-screen flex justify-center items-center">
-    <!-- Video element for webcam feed -->
-    <video id="video" class="w-screen h-screen border-amber-400 z-1" autoplay></video>
-
-    <!-- Canvas for drawing keypoints -->
-    <canvas id="canvas" class="absolute top-0 left-0 w-screen h-screen"></canvas>
-
-    <!-- Challenge header -->
-    <h1 class="text-2xl font-bold fixed bg-amber-600 top-0 left-20 z-4 p-2 rounded-b-2xl border-b-2 border-r-2 border-red-800">
-      Challenge - Sit-ups!
-    </h1>
-
-    <!-- Display for the count -->
-    <div class="fixed bg-cyan-900 bottom-0 right-20 text-center rounded-t-2xl z-4 p-2">
-      <h1 class="text-2xl font-bold">Sit-ups: <span id="count" class="bg-gray-500 px-2 py-1 rounded-xl">0</span></h1>
-
-      <!-- Buttons for submitting or cancelling -->
-      <div class="w-full grid grid-cols-2 gap-4 mt-4">
-        <button class="bg-green-500 font-bold py-2 px-4 rounded" id="submitBtn">Submit</button>
-        <button class="bg-red-500 font-bold py-2 px-4 rounded" id="cancelBtn">Cancel</button>
-      </div>
-    </div>
+<body>
+<div class="container">
+  <video id="video" width="640" height="480" autoplay></video>
+  <canvas id="canvas" width="640" height="480"></canvas>
+</div>
+<h1 id="title-exercise">Sit-to-Stand</h1>
+<div id="count-cont-bottom">
+  <h1 id="count-cont">Count <span id="count">0</span></h1>
+  <div id="button-cont">
+    <button id="apiButton">Submit</button>
+    <button id="cancelButton">Cancel</button>
   </div>
+</div>
 
-  <!-- API Button -->
-  <button id="apiButton" class="absolute top-10 right-10 bg-blue-500 p-2 rounded-xl">Send Data to API</button>
+<script>
+  let count = 0;
+  let position = null;
 
-  <script>
-    let count = 0;
-    let position = null;
+  // Set up video capture
+  const video = document.getElementById('video');
+  const countDisplay = document.getElementById('count');
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
 
-    const video = document.getElementById('video');
-    const countDisplay = document.getElementById('count');
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
+  async function setupWebcam() {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+    });
+    video.srcObject = stream;
+  }
 
-    async function setupWebcam() {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
+  async function detectPose() {
+    const net = await posenet.load();
+    const estimatePose = async () => {
+      const pose = await net.estimateSinglePose(video, {
+        flipHorizontal: true,
       });
-      video.srcObject = stream;
-    }
 
-    async function detectPose() {
-      const net = await posenet.load();
-      const estimatePose = async () => {
-        const pose = await net.estimateSinglePose(video, {
-          flipHorizontal: true,
+      if (pose.keypoints) {
+        // Clear previous drawings
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw the keypoints
+        pose.keypoints.forEach(point => {
+          if (point.score > 0.5) { // Draw only high confidence points
+            ctx.beginPath();
+            ctx.arc(point.position.x, point.position.y, 5, 0, 2 * Math.PI);
+            ctx.fillStyle = 'red';
+            ctx.fill();
+          }
         });
 
-        if (pose.keypoints) {
-          // Clear previous drawings
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Draw lines between certain keypoints (for example, from hip to knee)
+        drawLines(pose.keypoints);
 
-          // Draw the keypoints
-          pose.keypoints.forEach(point => {
-            if (point.score > 0.5) { // Draw only high confidence points
-              ctx.beginPath();
-              ctx.arc(point.position.x, point.position.y, 5, 0, 2 * Math.PI);
-              ctx.fillStyle = 'red';
-              ctx.fill();
-            }
-          });
+        const hipLeft = pose.keypoints.find(k => k.part === 'leftHip');
+        const hipRight = pose.keypoints.find(k => k.part === 'rightHip');
+        const kneeLeft = pose.keypoints.find(k => k.part === 'leftKnee');
+        const kneeRight = pose.keypoints.find(k => k.part === 'rightKnee');
 
-          // Draw lines between certain keypoints
-          drawLines(pose.keypoints);
+        if (hipLeft && hipRight && kneeLeft && kneeRight) {
+          const hipLeftY = hipLeft.position.y;
+          const hipRightY = hipRight.position.y;
+          const kneeLeftY = kneeLeft.position.y;
+          const kneeRightY = kneeRight.position.y;
 
-          const shoulderLeft = pose.keypoints.find(k => k.part === 'leftShoulder');
-          const shoulderRight = pose.keypoints.find(k => k.part === 'rightShoulder');
-          const hipLeft = pose.keypoints.find(k => k.part === 'leftHip');
-          const hipRight = pose.keypoints.find(k => k.part === 'rightHip');
-          const kneeLeft = pose.keypoints.find(k => k.part === 'leftKnee');
-          const kneeRight = pose.keypoints.find(k => k.part === 'rightKnee');
-
-          if (shoulderLeft && shoulderRight && hipLeft && hipRight && kneeLeft && kneeRight) {
-            const shoulderLeftY = shoulderLeft.position.y;
-            const shoulderRightY = shoulderRight.position.y;
-            const hipLeftY = hipLeft.position.y;
-            const hipRightY = hipRight.position.y;
-            const kneeLeftY = kneeLeft.position.y;
-            const kneeRightY = kneeRight.position.y;
-
-            // Check for "down" position (torso close to the ground)
-            if (shoulderLeftY > hipLeftY && shoulderRightY > hipRightY && kneeLeftY > hipLeftY && kneeRightY > hipRightY) {
-              if (position === 'up') {
-                count++;
-                position = 'down';
-                countDisplay.textContent = count;
-              }
-            }
-
-            // Check for "up" position (torso near knees)
-            else if (shoulderLeftY < hipLeftY && shoulderRightY < hipRightY && kneeLeftY < hipLeftY && kneeRightY < hipRightY) {
-              position = 'up';
+          // Check for "sitting" position (hips are higher than knees)
+          if (hipLeftY > kneeLeftY && hipRightY > kneeRightY) {
+            if (position === 'standing') {
+              count++;
+              position = 'sitting';
+              countDisplay.textContent = count;
             }
           }
+
+          // Check for "standing" position (hips are lower than knees)
+          else if (hipLeftY < kneeLeftY && hipRightY < kneeRightY) {
+            position = 'standing';
+          }
         }
+      }
 
-        requestAnimationFrame(estimatePose);
-      };
+      requestAnimationFrame(estimatePose);
+    };
 
-      estimatePose();
-    }
+    estimatePose();
+  }
 
-    // Function to draw lines between keypoints
-    function drawLines(keypoints) {
-      const connections = [
-        ['leftShoulder', 'leftElbow'],
-        ['leftElbow', 'leftWrist'],
-        ['rightShoulder', 'rightElbow'],
-        ['rightElbow', 'rightWrist'],
-        ['leftShoulder', 'rightShoulder'],
-        ['leftHip', 'rightHip'],
-        // Add more connections if needed
-      ];
+  // Function to draw lines between keypoints
+  function drawLines(keypoints) {
+    const connections = [
+      ['leftHip', 'leftKnee'],
+      ['rightHip', 'rightKnee'],
+      ['leftShoulder', 'leftHip'],
+      ['rightShoulder', 'rightHip'],
+      // Add more connections if needed
+    ];
 
-      connections.forEach(pair => {
-        const [partA, partB] = pair;
-        const pointA = keypoints.find(k => k.part === partA);
-        const pointB = keypoints.find(k => k.part === partB);
+    connections.forEach(pair => {
+      const [partA, partB] = pair;
+      const pointA = keypoints.find(k => k.part === partA);
+      const pointB = keypoints.find(k => k.part === partB);
 
-        if (pointA && pointB && pointA.score > 0.5 && pointB.score > 0.5) {
-          ctx.beginPath();
-          ctx.moveTo(pointA.position.x, pointA.position.y);
-          ctx.lineTo(pointB.position.x, pointB.position.y);
-          ctx.strokeStyle = 'green';
-          ctx.lineWidth = 2;
-          ctx.stroke();
-        }
-      });
-    }
-
-    function sendDataToAPI() {
-      let token = localStorage.getItem('auth');
-      const data = {
-        Authorization: token,
-        Calories: count
-      };
-
-      fetch('http://localhost:5000/activity', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data), 
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Response from API:', data);
-        })
-        .catch(error => {
-          console.error('Error sending data to API:', error);
-        })
-        .finally(() => {
-          window.close();
-        });
-    }
-
-    // Add event listener to the button
-    document.getElementById('apiButton').addEventListener('click', sendDataToAPI);
-    setupWebcam().then(() => {
-      detectPose();
+      if (pointA && pointB && pointA.score > 0.5 && pointB.score > 0.5) {
+        ctx.beginPath();
+        ctx.moveTo(pointA.position.x, pointA.position.y);
+        ctx.lineTo(pointB.position.x, pointB.position.y);
+        ctx.strokeStyle = 'green';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
     });
-  </script>
+  }
+
+  function sendDataToAPI() {
+    // Data to send to the API (for example, the sit-to-stand count)
+    let token = localStorage.getItem('auth');
+    const data = {
+      Authorization: token,
+      Calories: count
+    };
+    // Make a POST request to an API endpoint
+    fetch('http://localhost:5000/activity', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),  // Stringify the body
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Response from API:', data);
+      })
+      .catch(error => {
+        console.error('Error sending data to API:', error);
+      }).finally(() => {
+        // Close the current window or tab after the API request is completed
+        window.close();
+      });
+  }
+
+  // Add event listener to the button
+  document.getElementById('apiButton').addEventListener('click', sendDataToAPI);
+  setupWebcam().then(() => {
+    detectPose();
+  });
+</script>
+
 </body>
 </html>
