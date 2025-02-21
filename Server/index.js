@@ -6,7 +6,7 @@ const cors = require("cors");
 const app = express();
 const port = 5000;
 mongoose
-  .connect("mongodb+srv://sumanyu301:kotlakhurd@cluster0.itcpgws.mongodb.net/")
+  .connect("mongodb+srv://sumanyu301:kotlakhurd@cluster0.itcpgws.mongodb.net/HealtyHive")
   .then(() => {
     console.log("MongoDB Connected");
   })
