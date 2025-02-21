@@ -185,7 +185,10 @@
       }
     });
   }
-
+  
+  function cancelFunction(){
+    window.close();
+  }
   function sendDataToAPI() {
     // Data to send to the API (for example, the sit-to-stand count)
     let token = localStorage.getItem('auth');
@@ -215,6 +218,7 @@
 
   // Add event listener to the button
   document.getElementById('apiButton').addEventListener('click', sendDataToAPI);
+  document.getElementById('cancelButton').addEventListener('click', cancelFunction);
   setupWebcam().then(() => {
     detectPose();
   });
