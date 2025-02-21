@@ -33,14 +33,14 @@ const SignUpFunction = function (req, res) {
 };
 
 const LoginFunction = function (req, res) {
-  const isUser = UserDetails.findOne({ Email: req.body.Email });
+  const isUser = UserDetails.findOne({ Email: req.body.email });
   isUser.then((user) => {
     if (!user) {
       res.status(201).json({
         msg: "Recheck Your Email ID ",
       });
     } else {
-      if (bcrypt.compareSync(req.body.Password, user.Password)) {
+      if (bcrypt.compareSync(req.body.password, user.Password)) {
         const token = jwt.sign({ UserId: user._id }, secret_key, {
           expiresIn: "1h",
         });
