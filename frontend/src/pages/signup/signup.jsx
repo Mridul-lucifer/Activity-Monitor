@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import {useNavigate } from 'react-router-dom'
-import myBackground from './../Photos/signup.jpg';
+// import myBackground from './../Photos/signup.jpg';
 
 export const Signup = () => {
   const firstNameRef = useRef(null);
