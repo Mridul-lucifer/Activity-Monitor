@@ -8,6 +8,7 @@ export const Signin = () => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const [error, setError] = useState(null);
+  const [isSignUp, setSignUp] = useState(false);
 
   const handleSignIn = async () => {
     const email = emailRef.current.value;
@@ -22,16 +23,20 @@ export const Signin = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      const result = await response.json();
+      if(!response.ok) {
+        console.log("Error");
+        return;
+      }
 
-      if (response.ok) {
-        console.log("Signin successful:", result);
+      const result = await response.json();
+      console.log(result);
+      if(result.msg == "Recheck Your Email ID") {
+        setError("Recheck your email id");
+        return;
+      }
 
       localStorage.setItem('auth', result.token);
-        navigate("/challenges"); // Redirect to dashboard or home
-      } else {
-        setError(result.message || "Signin failed. Please try again.");
-      }
+      navigate("/challenges"); // Redirect to dashboard or home
     } catch (error) {
       console.error("Error signing in:", error);
       setError("An error occurred. Please try again later.");
@@ -40,11 +45,12 @@ export const Signin = () => {
 
   return (
     <div className="bg-signupbg min-h-screen bg-gray-100 text-gray-900 flex justify-center items-center backdrop-blur-sm bg-opacity-5">
-      <div className="max-w-screen-md w-full m-5 sm:m-10 bg-white shadow-lg sm:rounded-lg flex flex-col items-center p-8">
-        <h1 className="text-2xl xl:text-3xl font-extrabold text-center">
-          Sign In
-        </h1>
-        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+      <div className=" w-1/2 m-5 sm:m-10 md:max-w-[500px] bg-white shadow-lg sm:rounded-lg p-8">
+        <button className="w-full text-center text-2xl xl:text-3xl font-extrabold bg-none" onClick={() => navigate("/")}>
+          Healthy Hive
+        </button>
+        <h2 className="text-center font-bold text-xl mt-2 text-cyan-800">Welcome back!</h2>
+        {error && <p className="text-red-500 text-sm mt-2 text-center">{error}</p>}
 
         <form className="w-full mt-6">
           {/* Email */}
@@ -60,7 +66,7 @@ export const Signin = () => {
               id="email"
               type="text"
               placeholder="abc@example.com"
-              className="w-full px-3 py-2 border rounded shadow focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className=" px-3 py-2 border w-full rounded shadow focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
           </div>
 
@@ -82,7 +88,7 @@ export const Signin = () => {
           </div>
 
           {/* Buttons */}
-          <div className="mb-4 flex flex-col md:flex-row md:justify-between">
+          <div className="mb-4 w-1/2 m-auto flex flex-col md:flex-row md:justify-between">
             <button
               type="button"
               className="mt-5 w-full py-3 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 focus:ring-2 focus:ring-indigo-300 mr-1.5"
@@ -90,14 +96,15 @@ export const Signin = () => {
             >
               Sign In
             </button>
-            <button
+            {/* <button
               type="button"
               className="mt-5 w-full py-3 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 focus:ring-2 focus:ring-indigo-300"
               onClick={() => navigate("/signup")}
             >
               Sign Up
-            </button>
-          </div>
+            </button> */}
+            </div>
+            <p className="text-center text-sm">Don&apos;t have account? <a href="/signup" className="text-cyan-700">Sign in</a></p>
         </form>
       </div>
     </div>

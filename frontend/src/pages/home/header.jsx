@@ -39,7 +39,6 @@ export default function Header() {
           {!isToken ?
           (<nav className="flex items-center">
           <Link className="p-1 pl-2 pr-2 bg-black rounded-full ml-2 text-white" to="/signin">Sign In</Link>
-          <Link className="p-1 pl-2 pr-2 bg-black rounded-full ml-2 text-white" to="/signup">Sign Up</Link>
           </nav>):
           (<nav className="flex items-center">
             <button className="p-1 pl-2 pr-2 bg-black rounded-full ml-2 text-white" onClick={handleSignOut}>Sign Out</button>
