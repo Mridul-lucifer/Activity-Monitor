@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Push-up Counter with Landmarks and Lines</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+  <style>
+    body{
+      margin: 0;
+      overflow: hidden;
+    }
+    .container {
+      margin: 0;
+      position: relative;
+    }
+    #video {
+      width: 100vw;
+      height: 100vh;
+      transform: scaleX(-1); 
+      background-color: black;
+    }
+    #canvas {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+    }
+    #title-exercise {
+      position: fixed;
+      top: 0;
+      left: 100px;
+      background-color: coral;
+      border-radius: 0 0 20px 20px;
+      padding: 10px 20px;
+      margin: 0;
+    }
+    #count-cont-bottom {
+      position: fixed;
+      bottom: 0;
+      right: 100px;
+      background-color: cadetblue;
+      padding: 10px;
+    }
+    #count-cont {
+      margin: 0;
+    }
+    #count {
+      background-color: azure;
+      padding: 5px;
+      margin: 0;
+    }
+    #button-cont {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 10px 4px;
+      gap: 4px;
+    }
+    #button-cont button {
+      border: none;
+      border-radius: 4px;
+      
+    }
+    #apiButton {
+      background-color: rgb(60, 147, 10);
+      color: white;
+    }
+    #cancelButton {
+
+      background-color: rgb(144, 33, 33);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+<video id="video" width="640" height="480" autoplay></video>
+<canvas id="canvas" width="640" height="480"></canvas>
+</div>
+<h1 id="title-exercise">Jumping Jacks</h1>
+<div id="count-cont-bottom">
+<h1 id="count-cont">Calories <span id="count">0</span></h1>
+<div id="button-cont">
+<!-- <button id="apiButton">Submit</button> -->
+<button id="cancelButton">Cancel</button>
+</div>
+</div>
+<script>
+  let count = 0;
+  let position = null;
+
+  // Set up video capture
+  const video = document.getElementById('video');
+  const countDisplay = document.getElementById('count');
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  async function setupWebcam() {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+    });
+    video.srcObject = stream;
+  }
+
+  async function detectPose() {
+    const amount = localStorage.getItem('amount');
+    const net = await posenet.load();
+    const estimatePose = async () => {
+      const pose = await net.estimateSinglePose(video, {
+        flipHorizontal: true,
+      });
+
+      if (pose.keypoints) {
+        // Clear previous drawings
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw the keypoints
+        pose.keypoints.forEach(point => {
+          if (point.score > 0.5) { // Draw only high confidence points
+            ctx.beginPath();
+            ctx.arc(point.position.x, point.position.y, 5, 0, 2 * Math.PI);
+            ctx.fillStyle = 'red';
+            ctx.fill();
+          }
+        });
+
+        // Draw lines between certain keypoints (for example, from shoulder to wrist)
+        drawLines(pose.keypoints);
+
+        const wristLeft = pose.keypoints.find(k => k.part === 'leftWrist');
+        const wristRight = pose.keypoints.find(k => k.part === 'rightWrist');
+        const shoulderLeft = pose.keypoints.find(k => k.part === 'leftShoulder');
+        const shoulderRight = pose.keypoints.find(k => k.part === 'rightShoulder');
+
+        if (wristLeft && wristRight && shoulderLeft && shoulderRight) {
+          const wristLeftY = wristLeft.position.y;
+          const wristRightY = wristRight.position.y;
+          const shoulderLeftY = shoulderLeft.position.y;
+          const shoulderRightY = shoulderRight.position.y;
+
+          // Check for "down" position (wrist is lower than the shoulder)
+          if (wristLeftY > shoulderLeftY && wristRightY > shoulderRightY) {
+            if (position === 'up') {
+              // let weight = localStorage.getItem('weight');
+              // let gender = localStorage.getItem('gender');
+              // if(gender=='female'){
+              //   count += weight*(0.09)
+              // }
+              //
+              count = count + 1 ;
+              if(count == amount){
+                sendDataToAPI();
+              }
+              position = 'down';
+              countDisplay.textContent = count;
+            }
+          }
+
+          // Check for "up" position (wrist is higher than the shoulder)
+          else if (wristLeftY < shoulderLeftY && wristRightY < shoulderRightY) {
+            position = 'up';
+          }
+        }
+      }
+
+      requestAnimationFrame(estimatePose);
+    };
+
+    estimatePose();
+  }
+
+  // Function to draw lines between keypoints
+  function drawLines(keypoints) {
+    const connections = [
+      ['leftShoulder', 'leftElbow'],
+      ['leftElbow', 'leftWrist'],
+      ['rightShoulder', 'rightElbow'],
+      ['rightElbow', 'rightWrist'],
+      ['leftShoulder', 'rightShoulder'],
+      ['leftHip', 'rightHip'],
+      // Add more connections if needed
+    ];
+
+    connections.forEach(pair => {
+      const [partA, partB] = pair;
+      const pointA = keypoints.find(k => k.part === partA);
+      const pointB = keypoints.find(k => k.part === partB);
+
+      if (pointA && pointB && pointA.score > 0.5 && pointB.score > 0.5) {
+        ctx.beginPath();
+        ctx.moveTo(pointA.position.x, pointA.position.y);
+        ctx.lineTo(pointB.position.x, pointB.position.y);
+        ctx.strokeStyle = 'green';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+    });
+  }
+  function cancelFunction(){
+    window.close();
+  }
+  function sendDataToAPI() {
+  // Data to send to the API (for example, the push-up count)
+  alert("Finished "+count+" target")
+  let token = localStorage.getItem('auth');
+  let name = localStorage.getItem('name');
+  const data = {
+    name: name,
+    Authorization: token,
+  };
+  // Make a POST request to an API endpoint
+  fetch('http://localhost:5000/competiondone', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),  // Stringify the body
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Response from API:', data);
+    })
+    .catch(error => {
+      console.error('Error sending data to API:', error);
+    }).finally(() => {
+      // Close the current window or tab after the API request is completed
+      window.close();
+    });
+}
+
+
+  // Add event listener to the button
+  document.getElementById('apiButton').addEventListener('click', sendDataToAPI);
+  document.getElementById('cancelButton').addEventListener('click', cancelFunction);
+  setupWebcam().then(() => {
+    detectPose();
+  });
+</script>
+
+</body>
+</html>

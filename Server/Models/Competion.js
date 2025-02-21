@@ -22,6 +22,9 @@ const compSchema = new mongoose.Schema({
     owner: {
         type: String,
         required:false
-    }
+    },
+    array: [{
+        Solver : String
+    }]
 })
 module.exports = mongoose.model('CompDetails', compSchema);
