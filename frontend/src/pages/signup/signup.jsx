@@ -35,7 +35,7 @@ export const Signup = () => {
     const gender = genderRef.current.value;
     const password = passwordRef.current.value;
     const confirmPassword = confirmPasswordRef.current.value;
-    const weight = weightRef.current.value;
+    const weight = parseInt(weightRef.current.value);
 
     if (password !== confirmPassword) {
       passwordRef.current.classList.add("border-red-500", "focus:ring-red-400");
@@ -57,6 +57,7 @@ export const Signup = () => {
 
     const userAge = calculateAge(dob);
     setAge(userAge);
+
 
     const userData = {
       firstName,
@@ -148,6 +149,8 @@ export const Signup = () => {
               className="w-full px-3 py-2 border rounded shadow focus:outline-none focus:ring-2 focus:ring-indigo-400"
               onChange={() => setAge(calculateAge(dobRef.current.value))}
             />
+
+          {age !== null && <p className="text-sm text-gray-700">Age: {age}</p>}
           </div>
 
             <div className="md:w-1/2 md:ml-2">
@@ -167,8 +170,6 @@ export const Signup = () => {
             </div>
           </div>
 
-          {/* Age Display */}
-          {age !== null && <p className="text-sm text-gray-700">Age: {age}</p>}
 
           {/* Mobile */}
           <div className="mb-4">
