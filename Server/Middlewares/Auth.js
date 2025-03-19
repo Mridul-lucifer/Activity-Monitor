@@ -1,7 +1,7 @@
 const secret_key = "wercvbn"
 const jwt = require('jsonwebtoken')
 const Verfication = async function (req,res,next) {
-    // console.log(req.body);
+    // // console.log(req.body);
     console.log(req.body);
     let token = req.body.Authorization;
     console.log(token);

@@ -17,15 +17,16 @@ const createCompetionFunction = async function (req, res) {
 };
 
 const joinCompetionFunction = async function (req, res) {
+  console.log("Entered");
   try {
     const comp = await compDetails.findOne({ name: req.body.name });
 
     if (!comp) {
       return res.status(402).json({
-        msg: "Competition not found",
+        msg: "Competition not found"
       });
     }
-
+ 
     if (comp.passcode == req.body.passcode) {
       return res.status(200).json({
         msg: "Found",
