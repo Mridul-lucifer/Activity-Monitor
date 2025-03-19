@@ -12,7 +12,7 @@ export default function Competion() {
         alert(name+" "+passcode+" "+type+" "+amount);
         const token = localStorage.getItem("auth");
         try{
-            const response = await axios.post('http://localhost:5000/createcompetion',{
+            const response = await axios.post('https://serverhelper.onrender.com/createcompetion',{
                 Authorization: token,
                 name,
                 passcode,
@@ -29,7 +29,7 @@ export default function Competion() {
         alert(name+" "+passcode);
         const token = localStorage.getItem("auth");
         try{
-            const response = await axios.post('http://localhost:5000/joincompetion',{
+            const response = await axios.post('https://serverhelper.onrender.com/joincompetion',{
                 Authorization: token,
                 name,
                 passcode

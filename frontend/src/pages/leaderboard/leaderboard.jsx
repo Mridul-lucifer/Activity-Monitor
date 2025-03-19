@@ -12,7 +12,7 @@ const Leaderboard = () => {
     const fetchLeaderboardData = async () => {
         let token = localStorage.getItem('auth');
         try {
-            const response = await axios.post("http://localhost:5000/leaderboard", {
+            const response = await axios.post("https://serverhelper.onrender.com/leaderboard", {
                 Authorization: token,
             });
 

@@ -8,7 +8,7 @@ const MyChallenges = () => {
     useEffect(() => {
         const token = localStorage.getItem("auth");
         const fun1 = async () => {
-            const res = await axios.post("http://localhost:5000/myCompetions", {
+            const res = await axios.post("https://serverhelper.onrender.com/myCompetions", {
                 Authorization: token
             });
             setArr(res.data.arr);

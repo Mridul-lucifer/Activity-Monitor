@@ -85,7 +85,7 @@ const HandsUpExercise = () => {
   const submithands = async (e) =>{
     e.preventDefault();
     let val = 10;
-    const response = await axios.post('http://localhost:5000/activity',{
+    const response = await axios.post('https://serverhelper.onrender.com/activity',{
         Authorization : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2N2IzZjNkYjI2MjM5YWE4MWJmZmVkMWEiLCJpYXQiOjE3Mzk4NDY2MTl9.P4dW8NXxPNGwNKqbIwpMivNiTzkf_NxTjEZlQVP9VVE",
         Calories : val
     })
